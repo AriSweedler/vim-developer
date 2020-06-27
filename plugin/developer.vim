@@ -28,6 +28,10 @@ nnoremap <silent> <Leader><Leader>es :tabe <C-r>=Evaluate_path("$VIMRUNTIME/synt
 "{{{ Show syntax stack every time you move cursor (requires tpope's scripttease)
 let s:debugging = 0
 function! s:ToggleDebugSyntax()
+  if !exists('g:loaded_scriptease')
+    packadd scriptease
+  endif
+
   if s:debugging == 1
     autocmd! debugSyntax *
 
