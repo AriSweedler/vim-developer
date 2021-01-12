@@ -25,7 +25,7 @@ nnoremap <silent> <Leader>es :tabe <C-r>=Evaluate_path("$HOME/.vim/after/syntax/
 nnoremap <silent> <Leader><Leader>es :tabe <C-r>=Evaluate_path("$VIMRUNTIME/syntax/")<CR><CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
 """""""""""""""""""""""""""""""""""" Syntax """""""""""""""""""""""""""""""""{{{
-"{{{ Show syntax stack every time you move cursor (requires tpope's scripttease)
+"{{{ Show syntax stack every time you move cursor (requires tpope's scriptease)
 let s:debugging = 0
 function! s:ToggleDebugSyntax()
   if !exists('g:loaded_scriptease')
@@ -51,6 +51,10 @@ command! ToggleSyntaxerDebug call s:ToggleDebugSyntax()
 "}}}
 "{{{ Refresh syntax
 command! RefreshSyntax syntax clear <Bar> let &filetype=&filetype
+"}}}
+"{{{ Let us run Scriptnames before loading the pack.
+" scriptease will overwrite the meaning of this command
+command! Scriptnames packadd scriptease <Bar> Scriptnames
 "}}}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
