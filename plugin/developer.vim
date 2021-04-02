@@ -26,16 +26,16 @@ nnoremap <silent> <Leader><Leader>es :tabe <C-r>=Evaluate_path("$VIMRUNTIME/synt
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
 """""""""""""""""""""""""""""""""""" Syntax """""""""""""""""""""""""""""""""{{{
 "{{{ Show syntax stack every time you move cursor (requires tpope's scriptease)
-let s:debugging = 0
+let s:syntax_debugging = 0
 function! s:ToggleDebugSyntax()
   if !exists('g:loaded_scriptease')
     packadd scriptease
   endif
 
-  if s:debugging == 1
+  if s:syntax_debugging == 1
     autocmd! debugSyntax *
 
-    let s:debugging = 0
+    let s:syntax_debugging = 0
   else
     augroup debugSyntax
       autocmd!
@@ -43,9 +43,9 @@ function! s:ToggleDebugSyntax()
       autocmd CursorMoved * normal zS
     augroup END
 
-    let s:debugging = 1
+    let s:syntax_debugging = 1
   endif
-  echo "Debugging in now " . s:debugging
+  echo "Syntax debugging in now " . s:syntax_debugging
 endfunction
 command! ToggleSyntaxerDebug call s:ToggleDebugSyntax()
 "}}}
@@ -57,4 +57,33 @@ command! RefreshSyntax syntax clear <Bar> let &filetype=&filetype
 command! Scriptnames packadd scriptease <Bar> Scriptnames
 "}}}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+"""""""""""""""""""""""""""" cursorhold autocmd """""""""""""""""""""""""""" {{{
+let s:cursor_debugging = 0
+let s:cursor_counter = 0
+function! s:ToggleDebugCursorhold()
+  if s:cursor_debugging == 1
+    autocmd! debugCursorhold *
+
+    let s:cursor_debugging = 0
+  else
+    augroup debugCursorhold
+      autocmd!
+
+      autocmd cursorhold * let s:cursor_counter = s:cursor_counter + 1 | call s:SayStuff()
+    augroup END
+
+    let s:cursor_debugging = 1
+  endif
+  echo "Cursorhold debugging is now " . s:cursor_debugging
+endfunction
+
+" Helper function. Just update this and source the file to update what
+" cursorhold says
+function! s:SayStuff()
+  echom "Cursorhold counter: " . s:cursor_counter
+  "echom "... In dotfiles: " . lib#in_dotfiles() . "... gge = >" . g:gitgutter_git_executable
+endfunction
+command! ToggleCursorholdCounter call s:ToggleDebugCursorhold()
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+" TODO unify the debugging autocmds somehow?
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
