@@ -17,6 +17,7 @@ nnoremap <silent> <Leader>sv :source $MYVIMRC<CR>
 nnoremap <silent> <Leader>so :source %<CR>
 nnoremap <silent> <Leader>sf :source <C-r>=Evaluate_path("$HOME/.vim/after/ftplugin/")<CR><CR>
 nnoremap <silent> <Leader>ss :source <C-r>=Evaluate_path("$HOME/.vim/after/syntax/")<CR><CR>
+nnoremap <silent> <Leader><Leader>ss :edit! %<CR>
 
 " edit my {vimrc,ftplugin,syntax} file - useful for developing
 nnoremap <silent> <Leader>ev :tabe $MYVIMRC<CR>
