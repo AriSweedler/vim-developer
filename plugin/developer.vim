@@ -24,30 +24,43 @@ nnoremap <silent> <Leader>ef :tabe <C-r>=Evaluate_path("$HOME/.vim/after/ftplugi
 nnoremap <silent> <Leader>es :tabe <C-r>=Evaluate_path("$HOME/.vim/after/syntax/")<CR><CR>
 nnoremap <silent> <Leader><Leader>es :tabe <C-r>=Evaluate_path("$VIMRUNTIME/syntax/")<CR><CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
-"""""""""""""""""""""""""""""""""""" Syntax """""""""""""""""""""""""""""""""{{{
-"{{{ Show syntax stack every time you move cursor (requires tpope's scriptease)
-let s:syntax_debugging = 0
-function! s:ToggleDebugSyntax()
+let g:ari_debug = {}
+
+function SyntaxInit()
   if !exists('g:loaded_scriptease')
     packadd scriptease
   endif
+endfunction()
 
-  if s:syntax_debugging == 1
-    autocmd! debugSyntax *
-
-    let s:syntax_debugging = 0
-  else
-    augroup debugSyntax
-      autocmd!
-
-      autocmd CursorMoved * normal zS
-    augroup END
-
-    let s:syntax_debugging = 1
-  endif
-  echo "Syntax debugging in now " . s:syntax_debugging
+function SyntaxDisplay()
+  echom scriptease#synnames()->join(", ")
 endfunction
-command! ToggleSyntaxerDebug call s:ToggleDebugSyntax()
+
+function! s:ToggleDebug(tag)
+  " Init if this is the first call
+  if get(g:ari_debug, a:tag, 'uninitialized') == 'uninitialized'
+    call function(a:tag."Init")()
+    execute printf('call function("%s")()', a:tag."Init")
+    let g:ari_debug[a:tag] = 'inactive'
+  endif
+
+  let l:augp = "toggleDebug".a:tag
+
+  " We were active when called. Let's deactivate
+  if g:ari_debug[a:tag] != 'inactive'
+    let g:ari_debug[a:tag] = 'inactive'
+    execute "autocmd! ".l:augp." *"
+    return
+  endif
+
+  " Activate. Invoke 'display' at every cursormoved au event
+  let g:ari_debug[a:tag] = 'active'
+  execute "augroup ".l:augp
+    autocmd!
+    execute printf('autocmd CursorMoved * call function("%s")()', a:tag."Display")
+  execute "augroup END"
+endfunction
+command! ToggleSyntaxerDebug call s:ToggleDebug('Syntax')
 "}}}
 "{{{ Refresh syntax
 command! RefreshSyntax syntax clear <Bar> let &filetype=&filetype
@@ -85,5 +98,42 @@ function! s:SayStuff()
 endfunction
 command! ToggleCursorholdCounter call s:ToggleDebugCursorhold()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+"""""""""""""""""""""""""""" cursorhold autocmd """""""""""""""""""""""""""" {{{
+"""""""""""""""""""""""""""""""" properties """""""""""""""""""""""""""""""" {{{
+let s:prop_debugging = 0
+let s:prop_counter = 0
+function! s:ToggleDebugPropHold()
+  if s:prop_debugging == 1
+    autocmd! debugPropHold *
+
+    let s:prop_debugging = 0
+  else
+    augroup debugPropHold
+      autocmd!
+
+      autocmd cursorhold * let s:prop_counter = s:prop_counter + 1 | call s:PropSayStuff()
+    augroup END
+
+    let s:prop_debugging = 1
+  endif
+  echo "PropHold debugging is now " . s:prop_debugging
+endfunction
+
+" Helper function. Just update this and source the file to update what
+" cursorhold says
+function! s:PropSayStuff()
+  let [_, lnum, col, off, curswant] = getcurpos()
+  echom "Properties on the cursor: " . prop_list(lnum, {'col': col})->join(',')
+  "echom "... In dotfiles: " . lib#in_dotfiles() . "... gge = >" . g:gitgutter_git_executable
+endfunction
+command! TogglePropHoldCounter call s:ToggleDebugPropHold()
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
 " TODO unify the debugging autocmds somehow?
+" Make a framework.
+" * Give a name
+" * It is toggleable
+" * It can accept any autocmd
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" call GetText()->popup_atcursor({})
+" So op!
