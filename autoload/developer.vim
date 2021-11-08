@@ -19,7 +19,7 @@ endfunction
 " Call this in a plugin's ftplugin file to be able to do this
 " Like so:
 "
-"     call developer#RegisterPlugin('<sfile>:%h:%h')
+"     call developer#RegisterPlugin('<sfile>:h:h')
 "
 function! developer#RegisterPlugin(plug_root, ...)
   let s:actions = #{

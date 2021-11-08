@@ -22,6 +22,7 @@
 let s:actions = #{
 \   s: 'source',
 \   e: 'tabedit',
+\   E: 'edit!',
 \ }
 let s:files = #{
 \   v: '$MYVIMRC',
