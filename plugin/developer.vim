@@ -1,5 +1,5 @@
-" Give access to the Developer command.
-" Edit or source the relvant files in just a few keystrokes
+" Give access to the Developer commands.
+" Edit or source the relevant files in just a few keystrokes
 
 " Developer command ::= <Leader><action><file>
 "
@@ -8,31 +8,24 @@
 " action ::=
 "   s (source)
 " | e (tabedit)
+" | E (edit!)
 "
 " file ::=
-"   v (vimrc)
-" | o (current file)
+"   o (current file)
+" | v (vimrc)
 " | f (ftplugin)
 " | s (syntax)
 " | F (system ftplugin)
 " | S (system syntax)
-" | p (relevant plugin 1 - set this mapping in <Leader>ef)
-" | P (relevant plugin 2 - set this mapping in <Leader>ef)
-
-let s:actions = #{
-\   s: 'source',
-\   e: 'tabedit',
-\   E: 'edit!',
-\ }
-let s:files = #{
-\   v: '$MYVIMRC',
-\   o: '%',
-\   f: '$HOME/.vim/after/ftplugin/<C-r>=&filetype<CR>.vim',
-\   s: '$HOME/.vim/after/syntax/<C-r>=&filetype<CR>.vim',
-\   F: '$VIMRUNTIME/ftplugin/<C-r>=&filetype<CR>.vim',
-\   S: '$VIMRUNTIME/syntax/<C-r>=&filetype<CR>.vim',
-\ }
+" | p<plug_file> (inside the registered plugin)
+"
+" plug_file ::=
+"   a (autoload for the named submodule)
+" | p: (plugin for the named submodule)
+" | f: (ftplugin)
+" | s: (syntax)
 
 " Create the mappings
-call developer#KeymappingForActionsOnFiles(s:actions, s:files)
-nnoremap <silent> <Leader>ep :echom "WARN: If you want to use '\<Leader>ep{s,f}' then have a plugin register itself with 'call developer#RegisterPlugin(...)"<CR>
+call developer#init()
+nnoremap <silent> <Leader>ep :echom "WARN: If you want to use '\<Leader>ep{s,f}' then have a plugin register itself with 'call developer#register_plugin(...)"<CR>
+nnoremap gT :echom "WARN: To open a new tab at current buffer, use developer's '\<Leader>eo' instead"<CR>

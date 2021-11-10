@@ -1,1 +1,1 @@
-call developer#RegisterPlugin(expand("<sfile>:h:h"), 'developer')
+call developer#register_plugin(expand("<sfile>:h:h"), 'developer')
