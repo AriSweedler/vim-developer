@@ -7,11 +7,11 @@
 "
 " action ::=
 "   s (source)
-" | e (tabedit)
-" | E (edit!)
+" | t (tabedit)
+" | e (edit!)
 "
 " file ::=
-"   o (current file)
+"   % (current file)
 " | v (vimrc)
 " | f (ftplugin)
 " | s (syntax)

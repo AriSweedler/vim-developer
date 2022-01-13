@@ -11,15 +11,15 @@ function! s:KeymappingForActionsOnFiles(actions, files)
       let key_dev = "<Leader>"
       let keymap = key_dev.key_a.key_f
       let ex_cmd = ":".action." ".file
-      execute "nnoremap <silent> ".keymap." ".ex_cmd."<CR>"
+      execute "nnoremap <buffer> <silent> ".keymap." ".ex_cmd."<CR>"
     endfor
   endfor
 endfunction
 
 let s:actions = #{
 \   s: 'source',
-\   e: 'tabedit',
-\   E: 'edit!',
+\   t: 'tabedit',
+\   e: 'edit!',
 \ }
 let s:files = #{
 \   v: '$MYVIMRC',
@@ -43,8 +43,8 @@ function! developer#register_plugin(plug_root, ...)
   let s:plug_files = #{
   \   pa: a:plug_root.'/autoload/'.s:submodule.'.vim',
   \   pp: a:plug_root.'/plugin/'.s:submodule.'.vim',
-  \   pf: a:plug_root.'/ftplugin/<C-r>=&filetype<CR>.vim',
-  \   ps: a:plug_root.'/syntax/<C-r>=&filetype<CR>.vim',
+  \   pf: a:plug_root.'/after/ftplugin/<C-r>=&filetype<CR>.vim',
+  \   ps: a:plug_root.'/after/syntax/<C-r>=&filetype<CR>.vim',
   \ }
   call <SID>KeymappingForActionsOnFiles(s:actions, s:plug_files)
 endfunction

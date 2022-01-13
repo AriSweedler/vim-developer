@@ -34,6 +34,7 @@ function! debug#toggle(tag)
     let g:ari_debug[a:tag] = 'inactive'
     execute "autocmd! ".l:augp." *"
     call s:Invoke(a:tag, "Inactive")
+    call popup_clear()
     return
   endif
 
@@ -43,4 +44,5 @@ function! debug#toggle(tag)
     autocmd!
     execute printf('autocmd CursorMoved * call s:Invoke("%s", "Display")', a:tag)
   execute "augroup END"
+  call s:Invoke(a:tag, "Display")
 endfunction
