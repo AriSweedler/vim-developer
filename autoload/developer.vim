@@ -5,13 +5,14 @@
 " Accepts 2 maps:
 " * actions - from 'key' to 'ex command'
 " * files ' from 'key' to 'filepath'
-function! s:KeymappingForActionsOnFiles(actions, files)
+function! s:KeymappingForActionsOnFiles(actions, files, scope="")
+  let buffer = a:scope == "buffer" ? "<buffer>" : ""
   for [key_a, action] in items(a:actions)
     for [key_f, file] in items(a:files)
       let key_dev = "<Leader>"
       let keymap = key_dev.key_a.key_f
       let ex_cmd = ":".action." ".file
-      execute "nnoremap <buffer> <silent> ".keymap." ".ex_cmd."<CR>"
+      execute "nnoremap ".buffer." <silent> ".keymap." ".ex_cmd."<CR>"
     endfor
   endfor
 endfunction
@@ -46,5 +47,5 @@ function! developer#register_plugin(plug_root, ...)
   \   pf: a:plug_root.'/after/ftplugin/<C-r>=&filetype<CR>.vim',
   \   ps: a:plug_root.'/after/syntax/<C-r>=&filetype<CR>.vim',
   \ }
-  call <SID>KeymappingForActionsOnFiles(s:actions, s:plug_files)
+  call <SID>KeymappingForActionsOnFiles(s:actions, s:plug_files, "buffer")
 endfunction
