@@ -19,6 +19,8 @@ endfunction
 
 let s:actions = #{
 \   s: 'source',
+\   S: 'split',
+\   v: 'vertical split',
 \   t: 'tabedit',
 \   e: 'edit!',
 \ }
