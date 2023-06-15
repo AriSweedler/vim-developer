@@ -20,8 +20,7 @@ function! debug#Syntax#Display()
 
   " Popup
   if g:ari_debug["Syntax"] == "popup"
-    call popup_clear()
-    call scriptease#synnames()->popup_atcursor({})
+    echo scriptease#synnames()
     return
   endif
 endfunction

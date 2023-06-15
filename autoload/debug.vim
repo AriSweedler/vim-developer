@@ -1,11 +1,11 @@
 function s:NotifyDebugToggle(tag, turning_off)
   let status = a:turning_off ? "off" : "on"
-  call popup_notification("Debug info for ".a:tag." is now ".status, #{
-  \ line: 0,
-  \ col: 0,
-  \ highlight: 'MoreMsg',
-  \ padding: [1,1,1,1],
-  \ })
+"   call popup_notification("Debug info for ".a:tag." is now ".status, #{
+"   \ line: 0,
+"   \ col: 0,
+"   \ highlight: 'MoreMsg',
+"   \ padding: [1,1,1,1],
+"   \ })
 endfunction
 
 function s:Invoke(tag, lifecycle)
@@ -34,7 +34,7 @@ function! debug#toggle(tag)
     let g:ari_debug[a:tag] = 'inactive'
     execute "autocmd! ".l:augp." *"
     call s:Invoke(a:tag, "Inactive")
-    call popup_clear()
+    " call popup_clear()
     return
   endif
 
